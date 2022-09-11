@@ -1,0 +1,7 @@
+baseURL = 'http://example.org/'
+languageCode = 'en-us'
+title = 'Ugaitz Urien Crespo'
+[params]
+    title = 'Ugaitz Urien'
+    subtitle = 'photograpy'
+    no_exif = true

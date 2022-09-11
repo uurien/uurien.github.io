@@ -1,0 +1,9 @@
+@import '../variables';
+header {
+  text-align: center;
+  background: $background-2;
+  padding: 2rem;
+  h3 {
+    margin: 0.5em 0;
+  }
+}

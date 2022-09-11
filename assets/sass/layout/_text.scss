@@ -1,0 +1,18 @@
+@import '../variables';
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+html {
+  font-family: Roboto;
+  font-size: $text-size-default
+}
+body {
+  font-size: 1rem;
+}
+h1 {
+  font-size: 4rem;
+}
+h2 {
+  font-size: 3.5rem;
+}
+h3 {
+  font-size: 3rem;
+}
