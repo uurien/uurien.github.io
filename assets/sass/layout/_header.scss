@@ -1,9 +1,21 @@
 @import '../variables';
 header {
-  text-align: center;
+  display: flex;
   background: $background-2;
-  padding: 2rem;
+  padding: 1rem;
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: $header-height;
+  h1 {
+    font-size: 1.5rem;
+  }
   h3 {
-    margin: 0.5em 0;
+    font-size: 1.2rem;
+    @media screen and (max-width: 480px) {
+      display: none;
+    }
   }
 }
