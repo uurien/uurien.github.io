@@ -9,6 +9,10 @@ header {
   top: 0;
   left: 0;
   height: $header-height;
+  -webkit-box-shadow: 2px 2px 9px 5px rgba(0,0,0,0.34);
+  -moz-box-shadow: 2px 2px 9px 5px rgba(0,0,0,0.34);
+  box-shadow: 2px 2px 9px 5px rgba(0,0,0,0.34);
+
   h1 {
     font-size: 1.5rem;
   }

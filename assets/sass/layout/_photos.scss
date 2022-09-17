@@ -18,7 +18,11 @@
     vertical-align: top;
     margin: 0;
     padding: 0;
-    max-width: 100%;
+    max-width: 50%;
+    @media screen and (max-width: 480px) {
+      max-width: 100%;
+    }
+
 
     > img {
       display: block;
