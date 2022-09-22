@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {{ partial "head.html" . }}
+    <title>{{ .Site.Params.Title }} - {{ .Title }}</title>
+</head>
+<body>
+<main class="container">
+    <header>
+        <h1>{{ .Site.Params.Title }}</h1>
+        <h3>{{ .Title }}</h3>
+    </header>
+    <section class="photos">
+        <ul class="photo-list">
+            {{- range $page := sort (where .Site.RegularPages "Type" "photos") ".File.Dir" "desc" }}
+            {{- range $index, $image := $page.Resources.ByType "image"}}
+            <li>
+                {{- $.Scratch.Set "thumbnail" ($image.Resize "x275") -}}
+                {{- $.Scratch.Set "bigthumbnail" ($image.Resize "x1500") -}}
+                <img src="{{ ($.Scratch.Get "thumbnail").RelPermalink }}"
+                style="width:{{ ($.Scratch.Get "thumbnail").Width }}px;"
+                alt="Thumbnail of {{ $image.Name }}" title="{{ $image.Name }}"
+                data-camera="{{ $image.Params.Camera }}"
+                data-iso="{{ $image.Params.Iso }}"
+                data-focal="{{ $image.Params.Focal }}"
+                data-aperture="{{ $image.Params.Aperture }}"
+                data-shutter-speed="{{ $image.Params.Shutter_Speed }}"
+                data-big-src="{{ ($.Scratch.Get "bigthumbnail").RelPermalink }}" />
+            </li>
+            {{- end -}}
+            {{- end -}}
+        </ul>
+    </section>
+</main>
+{{ partial "image-viewer.html" . }}
+{{ partial "footer.html" . }}
+</body>
+</html>
