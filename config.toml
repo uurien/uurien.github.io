@@ -1,6 +1,7 @@
 baseURL = 'http://example.org/'
 languageCode = 'en-us'
 title = 'Ugaitz Urien Crespo'
+googleAnalytics = 'G-J0KMN5MDN3'
 [params]
     title = 'Ugaitz Urien'
     subtitle = 'photograpy'
