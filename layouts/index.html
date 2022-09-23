@@ -44,6 +44,8 @@
         {{ with .Site.GetPage "/photos" }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}
     </div>
 </div>
-<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+{{ if hugo.IsProduction }}
+    {{ template "_internal/google_analytics.html" . }}
+{{ end }}
 </body>
 </html>
