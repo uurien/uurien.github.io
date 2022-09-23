@@ -44,8 +44,6 @@
         {{ with .Site.GetPage "/photos" }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}
     </div>
 </div>
-{{ if hugo.IsProduction }}
-    {{ template "_internal/google_analytics.html" . }}
-{{ end }}
+{{ partial "google-analytics.html" . }}
 </body>
 </html>

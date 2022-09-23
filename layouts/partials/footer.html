@@ -2,6 +2,4 @@
     {{ $js := resources.Get "js/main.js" | js.Build (dict "minify" true "sourceMap" "external") }}
     <script type="text/javascript" src="{{ $js.RelPermalink }}" ></script>
 </footer>
-{{ if hugo.IsProduction }}
-    {{ template "_internal/google_analytics.html" . }}
-{{ end }}
+{{ partial "google-analytics.html" . }}

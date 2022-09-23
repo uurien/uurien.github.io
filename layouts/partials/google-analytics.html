@@ -1,0 +1,26 @@
+{{ if hugo.IsProduction }}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.Config.Services.GoogleAnalytics.ID }}"></script>
+<script type="text/javascript">
+    (function(window, document, tagName, url, methodName) {
+        window['GoogleAnalyticsObject'] = methodName;
+        window[methodName] = window[methodName] || function () {
+            (window[methodName].q = window[methodName].q || []).push(arguments)
+        }, window[methodName].l = 1 * new Date();
+        const tag = document.createElement(tagName);
+        const firstScript = document.getElementsByTagName(tagName)[0];
+        tag.async = 1;
+        tag.src = url;
+        firstScript.parentNode.insertBefore(tag, firstScript)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', '{{ site.Config.Services.GoogleAnalytics.ID }}', 'ugaitz.info', {
+        'storage': 'none',
+        'anonymizeIp': true,
+        'clientId': window.localStorage.getItem('googleAnalyticsClientId')
+    });
+    ga(function(tracker) {
+        window.localStorage.setItem('googleAnalyticsClientId', tracker.get('clientId'));
+    });
+    ga('send', 'pageview');
+</script>
+{{ end }}
