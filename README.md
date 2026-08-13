@@ -100,6 +100,12 @@ bottom-left    bottom-center   bottom-right
 The darkening gradient follows the text automatically, so it only shades the
 side that needs it.
 
+The repo ships one example Thing per demonstrated position, named after it
+(`bottom-left.mdx`, `top-left.mdx`, …). They all carry `example: true`, so
+they never appear on the homepage or in the archive, but they stay reachable
+at their own URL (e.g. `/things/bottom-left`) as a live reference. Delete them
+whenever they stop being useful.
+
 ## Homepage selection
 
 The homepage shows up to 6 Things marked `featured: true`, newest first. If
