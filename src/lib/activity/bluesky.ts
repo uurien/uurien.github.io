@@ -3,7 +3,7 @@ import type { Activity } from './types';
 // Bluesky's public AppView — no auth needed to read public posts.
 const ENDPOINT = 'https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed';
 
-const HANDLE = process.env.BLUESKY_HANDLE ?? 'uurien.bsky.social';
+const HANDLE = process.env.BLUESKY_HANDLE ?? 'ugaitz.info';
 
 type FeedItem = {
   reason?: unknown;

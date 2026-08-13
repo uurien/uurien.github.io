@@ -139,7 +139,7 @@ source. An API outage never blocks a deploy.
 
 Configurable via environment variables (all optional):
 
-- `BLUESKY_HANDLE` — defaults to `uurien.bsky.social`
+- `BLUESKY_HANDLE` — defaults to `ugaitz.info`
 - `GITHUB_ACTIVITY_USER` — defaults to `uurien`
 - `GITHUB_TOKEN` — raises the GitHub API rate limit (CI passes the built-in one)
 
