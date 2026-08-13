@@ -6,10 +6,15 @@ import { history } from '../config/history';
   {
     history.map((stop) => (
       <li class="history__item">
-        <span class="history__stop" tabindex="0" aria-label={stop.name}>
+        <span
+          class="history__stop"
+          tabindex="0"
+          aria-label={`${stop.name}. ${stop.description}`}
+        >
           <img class="history__icon" src={stop.icon} alt="" aria-hidden="true" />
           <span class="history__tooltip" aria-hidden="true">
-            {stop.name}
+            <span class="history__tooltip-name">{stop.name}</span>
+            <span class="history__tooltip-text">{stop.description}</span>
           </span>
         </span>
       </li>
@@ -22,6 +27,7 @@ import { history } from '../config/history';
     display: flex;
     align-items: center;
     position: relative;
+    width: 100%;
   }
 
   .history__item {
@@ -30,10 +36,16 @@ import { history } from '../config/history';
     align-items: center;
   }
 
+  .history__item + .history__item {
+    flex: 1;
+    min-width: 0;
+  }
+
   .history__item + .history__item::before {
     content: '';
     display: block;
-    width: clamp(0.75rem, 2vw, 1.5rem);
+    flex: 1;
+    min-width: 0.75rem;
     height: 1px;
     background: var(--border);
   }
@@ -42,8 +54,9 @@ import { history } from '../config/history';
     position: relative;
     display: grid;
     place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
+    flex: 0 0 auto;
+    width: clamp(2.5rem, 8vw, 3.15rem);
+    height: clamp(2.5rem, 8vw, 3.15rem);
     border-radius: 50%;
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -51,24 +64,71 @@ import { history } from '../config/history';
   }
 
   .history__icon {
-    width: 1.2rem;
-    height: 1.2rem;
+    width: clamp(1.35rem, 4.3vw, 1.7rem);
+    height: clamp(1.35rem, 4.3vw, 1.7rem);
     object-fit: contain;
   }
 
   .history__tooltip {
+    --tooltip-x: -50%;
     position: absolute;
-    bottom: calc(100% + 0.5rem);
+    z-index: 2;
+    bottom: calc(100% + 0.55rem);
     left: 50%;
-    transform: translateX(-50%) translateY(4px);
+    transform: translate(var(--tooltip-x), 4px);
+    display: grid;
+    gap: 0.2rem;
+    width: max-content;
+    max-width: min(17rem, 60vw);
     background: var(--bg-dark);
     color: var(--text-on-dark);
     font-size: 0.75rem;
-    white-space: nowrap;
-    padding: 0.3rem 0.55rem;
-    border-radius: 6px;
+    line-height: 1.45;
+    text-align: left;
+    padding: 0.5rem 0.65rem;
+    border-radius: 8px;
     opacity: 0;
     pointer-events: none;
+  }
+
+  .history__tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: var(--tooltip-arrow, 50%);
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-left: -0.25rem;
+    background: var(--bg-dark);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+
+  .history__tooltip-name {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .history__tooltip-text {
+    opacity: 0.75;
+  }
+
+  /* Keep the first and last tooltips inside the card instead of centred. */
+  .history__item:first-child .history__tooltip {
+    --tooltip-x: 0;
+    --tooltip-arrow: 1.5rem;
+    left: 0;
+  }
+
+  .history__item:last-child .history__tooltip {
+    --tooltip-x: 0;
+    --tooltip-arrow: calc(100% - 1.5rem);
+    left: auto;
+    right: 0;
+  }
+
+  .history__item:hover,
+  .history__item:focus-within {
+    z-index: 2;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -80,6 +140,6 @@ import { history } from '../config/history';
   .history__stop:hover .history__tooltip,
   .history__stop:focus-visible .history__tooltip {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translate(var(--tooltip-x), 0);
   }
 </style>

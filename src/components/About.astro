@@ -10,7 +10,9 @@ import History from './History.astro';
   </div>
   <div class="about__history">
     <h2 class="section__title">A bit of history</h2>
-    <History />
+    <div class="about__timeline">
+      <History />
+    </div>
   </div>
 </section>
 
@@ -19,7 +21,7 @@ import History from './History.astro';
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: clamp(1.5rem, 4vw, 3rem);
-    align-items: start;
+    align-items: stretch;
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
@@ -35,14 +37,24 @@ import History from './History.astro';
     margin-bottom: 0.9rem;
   }
 
+  .about__history {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .about__timeline {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
   @media (max-width: 860px) {
     .about {
       grid-template-columns: 1fr;
     }
 
-    .about__history {
-      overflow-x: auto;
-      padding-bottom: 0.5rem;
+    .about__timeline {
+      padding-top: 0.25rem;
     }
   }
 </style>

@@ -3,14 +3,34 @@
 // and update the path to replace a placeholder. Order is the display order.
 export type HistoryStop = {
   name: string;
+  description: string;
   icon: string;
 };
 
 export const history: HistoryStop[] = [
-  { name: 'University', icon: '/history/university.svg' },
-  { name: 'Eurohelp', icon: '/history/eurohelp.svg' },
-  { name: 'Arima', icon: '/history/arima.png' },
-  { name: 'Hdiv', icon: '/history/hdiv.png' },
-  { name: 'Datadog', icon: '/history/datadog.png' },
-  { name: 'Arima', icon: '/history/arima.png' },
+  {
+    name: 'University',
+    description: 'Computer Systems Engineering.',
+    icon: '/history/university.svg',
+  },
+  {
+    name: 'Eurohelp',
+    description: 'First job. Met my future co-founders here.',
+    icon: '/history/eurohelp.svg',
+  },
+  {
+    name: 'Arima',
+    description: 'Started with a few colleagues from Eurohelp.',
+    icon: '/history/arima.png',
+  },
+  {
+    name: 'Hdiv',
+    description: 'An IAST product born inside Arima.',
+    icon: '/history/hdiv.png',
+  },
+  {
+    name: 'Datadog',
+    description: 'Hdiv became part of Datadog.',
+    icon: '/history/datadog.png',
+  },
 ];
