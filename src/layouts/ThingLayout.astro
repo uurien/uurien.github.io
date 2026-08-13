@@ -78,11 +78,18 @@ const dateLabel = date.toLocaleDateString('en-US', {
     }
 
     <div class="wrap">
-      <div class="prose thing__body">
-        <slot />
+      <div class:list={['thing__body', gallery.length > 0 && 'thing__body--split']}>
+        <div class="prose">
+          <slot />
+        </div>
+        {
+          gallery.length > 0 && (
+            <div class="thing__gallery">
+              <Gallery images={gallery} />
+            </div>
+          )
+        }
       </div>
-
-      <Gallery images={gallery} />
     </div>
   </article>
 </BaseLayout>
@@ -164,5 +171,25 @@ const dateLabel = date.toLocaleDateString('en-US', {
 
   .thing__body {
     margin-top: 2rem;
+  }
+
+  /* With photos, they fill the space the text measure leaves over rather than
+     being stacked at the end of the page. Without photos there is nothing to
+     put there, so the text is centred instead of hugging the left edge. */
+  .thing__body--split {
+    display: grid;
+    grid-template-columns: minmax(0, 58ch) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+  }
+
+  .thing__body:not(.thing__body--split) .prose {
+    margin-inline: auto;
+  }
+
+  @media (max-width: 860px) {
+    .thing__body--split {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
