@@ -12,7 +12,8 @@ const allThings = await getPublishedThings();
 const featured = allThings.filter((t) => t.data.featured);
 const things = (featured.length > 0 ? featured : allThings).slice(0, 4);
 
-const activity = await getActivity(6);
+// Four is what the activity grid fits in a single row on desktop.
+const activity = await getActivity(4);
 ---
 
 <BaseLayout>

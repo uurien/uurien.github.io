@@ -13,5 +13,5 @@ export const site = {
     linkedin: 'https://www.linkedin.com/in/uurien',
   },
   about:
-    "I'm a software engineer from Zarautz. I co-founded Arima and Hdiv Security, and I've worked on different software and security projects over the years.",
+    "I'm a software engineer from Zarautz. Co-founder of Arima and Hdiv Security, and I've worked on different software and security projects over the years.",
 };

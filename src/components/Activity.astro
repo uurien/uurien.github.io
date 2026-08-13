@@ -49,10 +49,24 @@ function formatDate(date: Date) {
     font-size: 0.9rem;
   }
 
+  /* Fixed column counts rather than auto-fill: the feed is capped at four
+     items, so stepping 4 -> 2 -> 1 keeps every row full at any width. */
   .activity-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: 1fr;
     gap: 1rem;
+  }
+
+  @media (min-width: 560px) {
+    .activity-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 860px) {
+    .activity-list {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
   }
 
   .activity-item {
