@@ -33,7 +33,13 @@ jobs:
           node-version: 24
           cache: npm
 
-      - run: npm ci
+      # Not `npm ci`: it validates the whole lock tree including optional
+      # platform packages, and a lock generated on macOS omits the Linux
+      # variants of @emnapi/* (pulled in by @bruits/satteri-wasm32-wasi), so
+      # it rejects the lock here while accepting it locally. `npm install`
+      # still installs the locked versions; it just resolves what's missing
+      # instead of failing. Nothing is committed back.
+      - run: npm install --no-audit --no-fund
 
       - name: Build
         run: npm run build
