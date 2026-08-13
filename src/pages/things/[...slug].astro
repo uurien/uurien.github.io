@@ -1,0 +1,26 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import ThingLayout from '../../layouts/ThingLayout.astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  // Drafts and the example Thing still build at their own URL; they're only
+  // hidden from the homepage and archive listings.
+  const things = await getCollection('things');
+  return things.map((thing) => ({
+    params: { slug: thing.id },
+    props: { thing },
+  }));
+};
+
+interface Props {
+  thing: CollectionEntry<'things'>;
+}
+
+const { thing } = Astro.props;
+const { Content } = await render(thing);
+---
+
+<ThingLayout thing={thing}>
+  <Content />
+</ThingLayout>

@@ -1,0 +1,85 @@
+---
+import { history } from '../config/history';
+---
+
+<ol class="history" aria-label="Career history">
+  {
+    history.map((stop) => (
+      <li class="history__item">
+        <span class="history__stop" tabindex="0" aria-label={stop.name}>
+          <img class="history__icon" src={stop.icon} alt="" aria-hidden="true" />
+          <span class="history__tooltip" aria-hidden="true">
+            {stop.name}
+          </span>
+        </span>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .history {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .history__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .history__item + .history__item::before {
+    content: '';
+    display: block;
+    width: clamp(0.75rem, 2vw, 1.5rem);
+    height: 1px;
+    background: var(--border);
+  }
+
+  .history__stop {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    cursor: default;
+  }
+
+  .history__icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    object-fit: contain;
+  }
+
+  .history__tooltip {
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: var(--bg-dark);
+    color: var(--text-on-dark);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    padding: 0.3rem 0.55rem;
+    border-radius: 6px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .history__tooltip {
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+  }
+
+  .history__stop:hover .history__tooltip,
+  .history__stop:focus-visible .history__tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>

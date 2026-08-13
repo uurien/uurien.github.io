@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ThingCard from '../../components/ThingCard.astro';
+import { getPublishedThings, groupByYear } from '../../lib/things';
+
+const things = await getPublishedThings();
+const years = groupByYear(things);
+---
+
+<BaseLayout
+  title="Things"
+  description="A visual archive of things Ugaitz Urien has made outside work."
+  compactHeader
+>
+  <div class="wrap">
+    <h2 class="archive-title">Things</h2>
+
+    {
+      years.length === 0 ? (
+        <p class="archive-empty">No things published yet.</p>
+      ) : (
+        years.map(([year, yearThings]) => (
+          <section class="year">
+            <h3 class="year__label">{year}</h3>
+            <div class="year__grid">
+              {yearThings.map((thing, index) => (
+                // Every third Thing spans the full width, so the archive
+                // breathes instead of reading as a uniform 2-column table.
+                <div class={index % 3 === 2 ? 'year__cell year__cell--wide' : 'year__cell'}>
+                  <ThingCard
+                    thing={thing}
+                    ratio={index % 3 === 2 ? 2.6 : undefined}
+                    imageSizes={index % 3 === 2 ? '(min-width: 860px) 1120px, 100vw' : '(min-width: 860px) 50vw, 100vw'}
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        ))
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .archive-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .archive-empty {
+    margin-top: 1.5rem;
+    color: var(--text-dim);
+  }
+
+  .year {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .year__label {
+    font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .year__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--gap);
+  }
+
+  /* The wrapper is the grid item, so it has to pass the row's height down to
+     the card rather than letting the card keep its natural height. */
+  .year__cell {
+    display: grid;
+  }
+
+  .year__cell--wide {
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 860px) {
+    .year__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

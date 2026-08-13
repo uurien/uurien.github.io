@@ -1,0 +1,48 @@
+---
+import { site } from '../config/site';
+import History from './History.astro';
+---
+
+<section class="about">
+  <div class="about__text">
+    <h2 class="section__title">About me</h2>
+    <p>{site.about}</p>
+  </div>
+  <div class="about__history">
+    <h2 class="section__title">A bit of history</h2>
+    <History />
+  </div>
+</section>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .about__text p {
+    max-width: 52ch;
+    line-height: 1.65;
+  }
+
+  .about h2 {
+    margin-bottom: 0.9rem;
+  }
+
+  @media (max-width: 860px) {
+    .about {
+      grid-template-columns: 1fr;
+    }
+
+    .about__history {
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+  }
+</style>

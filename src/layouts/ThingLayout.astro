@@ -1,0 +1,168 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Gallery from '../components/Gallery.astro';
+
+interface Props {
+  thing: CollectionEntry<'things'>;
+}
+
+const { thing } = Astro.props;
+const { title, description, date, cover, coverAlt, externalUrl, githubUrl, tags, gallery, example } =
+  thing.data;
+
+const dateLabel = date.toLocaleDateString('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+});
+---
+
+<BaseLayout title={title} description={description} compactHeader>
+  <article class="thing">
+    <div class="wrap">
+      {
+        example && (
+          <p class="thing__example-note">
+            This is a template/example Thing, not real content. It is excluded from the homepage and
+            the archive.
+          </p>
+        )
+      }
+
+      <header class="thing__header">
+        <p class="thing__meta">
+          <a href="/things">Things</a>
+          <span aria-hidden="true">/</span>
+          <time datetime={date.toISOString()}>{dateLabel}</time>
+        </p>
+        <h2 class="thing__title">{title}</h2>
+        <p class="thing__description">{description}</p>
+        {
+          (externalUrl || githubUrl || tags.length > 0) && (
+            <p class="thing__links">
+              {externalUrl && (
+                <a href={externalUrl} target="_blank" rel="noopener noreferrer">
+                  Visit &rarr;
+                </a>
+              )}
+              {githubUrl && (
+                <a href={githubUrl} target="_blank" rel="noopener noreferrer">
+                  Source &rarr;
+                </a>
+              )}
+              {tags.map((tag) => (
+                <span class="thing__tag">{tag}</span>
+              ))}
+            </p>
+          )
+        }
+      </header>
+    </div>
+
+    {
+      cover && (
+        <div class="wrap">
+          <div class="thing__cover">
+            <Image
+              src={cover}
+              alt={coverAlt ?? ''}
+              widths={[600, 1000, 1600]}
+              sizes="(min-width: 1120px) 1072px, 100vw"
+              loading="eager"
+            />
+          </div>
+        </div>
+      )
+    }
+
+    <div class="wrap">
+      <div class="prose thing__body">
+        <slot />
+      </div>
+
+      <Gallery images={gallery} />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .thing__example-note {
+    background: #fff6d8;
+    border: 1px solid #e8d9a0;
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .thing__meta {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  .thing__meta a:hover,
+  .thing__meta a:focus-visible {
+    color: var(--text);
+  }
+
+  .thing__title {
+    margin-top: 0.6rem;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    line-height: 1.15;
+  }
+
+  .thing__description {
+    margin-top: 0.75rem;
+    max-width: 60ch;
+    color: var(--text-dim);
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  .thing__links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .thing__links a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .thing__tag {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.15rem 0.65rem;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+
+  .thing__cover {
+    margin-top: 1.75rem;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .thing__cover :global(img) {
+    width: 100%;
+    height: auto;
+    /* Keeps a tall portrait cover from filling the whole screen before the
+       write-up starts. */
+    max-height: 78vh;
+    object-fit: cover;
+  }
+
+  .thing__body {
+    margin-top: 2rem;
+  }
+</style>

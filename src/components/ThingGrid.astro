@@ -1,0 +1,28 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ThingCard from './ThingCard.astro';
+
+interface Props {
+  things: CollectionEntry<'things'>[];
+}
+
+const { things } = Astro.props;
+---
+
+<div class="thing-grid">
+  {things.map((thing) => <ThingCard thing={thing} />)}
+</div>
+
+<style>
+  .thing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--gap);
+  }
+
+  @media (max-width: 860px) {
+    .thing-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
