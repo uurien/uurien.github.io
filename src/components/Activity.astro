@@ -1,0 +1,128 @@
+---
+import type { Activity } from '../lib/activity';
+
+interface Props {
+  activity: Activity[];
+}
+
+const { activity } = Astro.props;
+
+const sourceLabel: Record<Activity['source'], string> = {
+  bluesky: 'Bluesky',
+  github: 'GitHub',
+};
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+---
+
+{
+  activity.length === 0 ? (
+    <p class="activity-empty">Nothing to show here yet.</p>
+  ) : (
+    <ul class="activity-list">
+      {activity.map((item) => (
+        <li>
+          <a class="activity-item" href={item.url} target="_blank" rel="noopener noreferrer">
+            {item.image && (
+              <div class="activity-item__image">
+                <img src={item.image} alt="" loading="lazy" />
+              </div>
+            )}
+            <div class="activity-item__body">
+              <p class="activity-item__source">{sourceLabel[item.source]}</p>
+              {item.title && <p class="activity-item__title">{item.title}</p>}
+              {item.text && <p class="activity-item__text">{item.text}</p>}
+              <p class="activity-item__date">{formatDate(item.date)}</p>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .activity-empty {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+
+  /* Fixed column counts rather than auto-fill: the feed is capped at four
+     items, so stepping 4 -> 2 -> 1 keeps every row full at any width. */
+  .activity-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 560px) {
+    .activity-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 860px) {
+    .activity-list {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .activity-item {
+    display: block;
+    height: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .activity-item:hover,
+  .activity-item:focus-visible {
+    border-color: var(--text-dim);
+  }
+
+  .activity-item__image {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+
+  .activity-item__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .activity-item__body {
+    padding: 1rem 1.1rem;
+  }
+
+  .activity-item__source {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+  }
+
+  .activity-item__title {
+    margin-top: 0.4rem;
+    font-weight: 700;
+  }
+
+  .activity-item__text {
+    margin-top: 0.4rem;
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .activity-item__date {
+    margin-top: 0.75rem;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+</style>

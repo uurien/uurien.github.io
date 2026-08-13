@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ThingGrid from '../components/ThingGrid.astro';
+import About from '../components/About.astro';
+import Activity from '../components/Activity.astro';
+import { getPublishedThings } from '../lib/things';
+import { getActivity } from '../lib/activity';
+
+const allThings = await getPublishedThings();
+// Featured Things first; if none are marked featured, just show the newest.
+// The homepage is only a selection — everything lives on /things.
+const featured = allThings.filter((t) => t.data.featured);
+const things = (featured.length > 0 ? featured : allThings).slice(0, 4);
+
+// Four is what the activity grid fits in a single row on desktop.
+const activity = await getActivity(4);
+---
+
+<BaseLayout>
+  <div class="wrap">
+    {
+      things.length > 0 ? (
+        <>
+          <ThingGrid things={things} />
+          <p class="things-more">
+            <a href="/things">See all things &rarr;</a>
+          </p>
+        </>
+      ) : (
+        <section class="things-empty">
+          <p>No things published yet.</p>
+        </section>
+      )
+    }
+
+    <section class="section">
+      <About />
+    </section>
+
+    <section class="section">
+      <div class="section__heading">
+        <h2 class="section__title">Latest activity</h2>
+      </div>
+      <Activity activity={activity} />
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .things-more {
+    margin-top: 1.25rem;
+    text-align: right;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+  }
+
+  .things-more a:hover,
+  .things-more a:focus-visible {
+    color: var(--text);
+  }
+
+  .things-empty {
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-lg);
+    padding: clamp(2rem, 6vw, 4rem);
+    text-align: center;
+    color: var(--text-dim);
+  }
+</style>

@@ -1,5 +1,0 @@
-<footer>
-    {{ $js := resources.Get "js/main.js" | js.Build (dict "minify" true "sourceMap" "external") }}
-    <script type="text/javascript" src="{{ $js.RelPermalink }}" ></script>
-</footer>
-{{ partial "google-analytics.html" . }}

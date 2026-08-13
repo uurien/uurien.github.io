@@ -1,0 +1,44 @@
+---
+import { site } from '../config/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap site-footer__inner">
+    <p>&copy; {year} {site.name}</p>
+    <nav aria-label="Social links">
+      <a href={site.social.github} target="_blank" rel="me noopener noreferrer">GitHub</a>
+      <a href={site.social.bluesky} target="_blank" rel="me noopener noreferrer">Bluesky</a>
+      <a href={site.social.linkedin} target="_blank" rel="me noopener noreferrer">LinkedIn</a>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: clamp(3rem, 6vw, 5rem);
+    padding-block: 1.75rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 0.85rem;
+  }
+
+  .site-footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .site-footer nav {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .site-footer a:hover,
+  .site-footer a:focus-visible {
+    color: var(--text);
+  }
+</style>

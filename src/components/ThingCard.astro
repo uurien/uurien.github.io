@@ -1,0 +1,192 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  thing: CollectionEntry<'things'>;
+  imageSizes?: string;
+  /** Override the shape, e.g. for a full-width card in the archive. */
+  ratio?: number;
+}
+
+const { thing, imageSizes = '(min-width: 860px) 50vw, 100vw', ratio: ratioProp } = Astro.props;
+const { title, description, date, cover, coverAlt, tags, textPosition } = thing.data;
+
+const dateLabel = date.toLocaleDateString('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+});
+
+const palette = ['#7dd88f', '#c0a5f5', '#7fb2ff', '#6fd3d3', '#ffb37a'];
+const tag = tags[0];
+const tagColor = tag
+  ? palette[[...tag].reduce((sum, ch) => sum + ch.charCodeAt(0), 0) % palette.length]
+  : undefined;
+
+// The card takes its shape from the cover photo, so rows vary in height
+// instead of every Thing becoming an identical box. Clamped so a very tall
+// or very wide photo can't distort the grid.
+const ratio =
+  ratioProp ?? (cover ? Math.min(Math.max(cover.width / cover.height, 0.85), 1.9) : 1.5);
+---
+
+<a class="thing-card" href={`/things/${thing.id}`} style={`--card-ratio:${ratio}`}>
+  <div class="thing-card__sizer" aria-hidden="true"></div>
+  {
+    cover && (
+      <div class="thing-card__cover">
+        <Image src={cover} alt={coverAlt ?? ''} widths={[400, 800, 1200]} sizes={imageSizes} />
+      </div>
+    )
+  }
+  <div class="thing-card__overlay" data-pos={textPosition}>
+    {tag && <p class="thing-card__tag" style={`color:${tagColor}`}>{tag.toUpperCase()}</p>}
+    <h3 class="thing-card__title">{title}</h3>
+    <p class="thing-card__description">{description}</p>
+    <p class="thing-card__date">{dateLabel}</p>
+  </div>
+</a>
+
+<style>
+  .thing-card {
+    position: relative;
+    display: block;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--bg-dark);
+    /* Keeps text readable even on a very short image. */
+    min-height: 260px;
+    isolation: isolate;
+  }
+
+  /* Gives the card its natural height (which sizes the grid row) without
+     constraining its width. The card itself still stretches to the row, so
+     neighbours of different proportions never leave a gap. */
+  .thing-card__sizer {
+    width: 100%;
+    aspect-ratio: var(--card-ratio, 1.5);
+    pointer-events: none;
+  }
+
+  /* Cards stretch to their grid row, so the photo fills whatever height the
+     row ends up being rather than leaving a gap. */
+  .thing-card__cover {
+    position: absolute;
+    inset: 0;
+  }
+
+  .thing-card__cover :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .thing-card__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 1.4rem 1.5rem 1.5rem;
+    color: #fff;
+  }
+
+  .thing-card__overlay > * {
+    position: relative;
+  }
+
+  /* Scrim so the overlaid text stays legible over any photo. Its direction
+     follows the text so only the side that needs darkening gets it. */
+  .thing-card__overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      var(--scrim-angle, to top),
+      rgba(0, 0, 0, 0.82) 0%,
+      rgba(0, 0, 0, 0.55) 28%,
+      rgba(0, 0, 0, 0.12) 55%,
+      rgba(0, 0, 0, 0) 78%
+    );
+  }
+
+  /* Vertical placement */
+  .thing-card__overlay[data-pos^='top'] {
+    justify-content: flex-start;
+    --scrim-angle: to bottom;
+  }
+
+  .thing-card__overlay[data-pos^='middle'] {
+    justify-content: center;
+  }
+
+  .thing-card__overlay[data-pos^='bottom'] {
+    justify-content: flex-end;
+    --scrim-angle: to top;
+  }
+
+  /* Horizontal placement */
+  .thing-card__overlay[data-pos$='-left'] {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .thing-card__overlay[data-pos$='-center'] {
+    align-items: center;
+    text-align: center;
+  }
+
+  .thing-card__overlay[data-pos$='-right'] {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  /* Vertically centred text reads better against a sideways scrim. */
+  .thing-card__overlay[data-pos='middle-left'] {
+    --scrim-angle: to right;
+  }
+
+  .thing-card__overlay[data-pos='middle-right'] {
+    --scrim-angle: to left;
+  }
+
+  .thing-card__tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.45rem;
+  }
+
+  .thing-card__title {
+    font-size: 1.4rem;
+    line-height: 1.2;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+  }
+
+  .thing-card__description {
+    margin-top: 0.5rem;
+    max-width: 42ch;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.88);
+  }
+
+  .thing-card__date {
+    margin-top: 0.9rem;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .thing-card__cover :global(img) {
+      transition: transform 0.4s ease;
+    }
+
+    .thing-card:hover .thing-card__cover :global(img),
+    .thing-card:focus-visible .thing-card__cover :global(img) {
+      transform: scale(1.03);
+    }
+  }
+</style>

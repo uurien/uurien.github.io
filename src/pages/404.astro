@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Not found">
+  <div class="wrap not-found">
+    <h2>404</h2>
+    <p>This page doesn't exist.</p>
+    <p><a href="/">Go home</a> or <a href="/things">see all things</a>.</p>
+  </div>
+</BaseLayout>
+
+<style>
+  .not-found {
+    padding-block: clamp(3rem, 10vw, 6rem);
+  }
+
+  .not-found h2 {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+  }
+
+  .not-found p {
+    margin-top: 0.75rem;
+    color: var(--text-dim);
+  }
+
+  .not-found a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: var(--text);
+  }
+</style>

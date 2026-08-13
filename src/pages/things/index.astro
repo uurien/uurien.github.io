@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ThingCard from '../../components/ThingCard.astro';
+import { getPublishedThings, groupByYear, assignSpans } from '../../lib/things';
+
+const things = await getPublishedThings();
+const years = groupByYear(things);
+
+// A looser rhythm than the homepage: a 50/50 row, a 40/60 row, then a
+// full-width Thing, then 60/40. Tweak the numbers (they're twelfths of the
+// grid) to change how the archive breathes.
+const ARCHIVE_PATTERN = [6, 6, 5, 7, 12, 7, 5];
+
+const sizesFor = (span: number) =>
+  `(min-width: 1180px) ${Math.round((span / 12) * 1120)}px, (min-width: 860px) ${Math.round(
+    (span / 12) * 100
+  )}vw, 100vw`;
+---
+
+<BaseLayout
+  title="Things"
+  description="A visual archive of things Ugaitz Urien has made outside work."
+  compactHeader
+>
+  <div class="wrap">
+    <h2 class="archive-title">Things</h2>
+
+    {
+      years.length === 0 ? (
+        <p class="archive-empty">No things published yet.</p>
+      ) : (
+        years.map(([year, yearThings]) => {
+          const spans = assignSpans(yearThings.length, ARCHIVE_PATTERN);
+          return (
+            <section class="year">
+              <h3 class="year__label">{year}</h3>
+              <div class="year__grid">
+                {yearThings.map((thing, index) => (
+                  <div class="year__cell" style={`--span:${spans[index]}`}>
+                    <ThingCard
+                      thing={thing}
+                      imageSizes={sizesFor(spans[index]!)}
+                      ratio={spans[index] === 12 ? 2.6 : undefined}
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+          );
+        })
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .archive-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .archive-empty {
+    margin-top: 1.5rem;
+    color: var(--text-dim);
+  }
+
+  .year {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .year__label {
+    font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .year__grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gap);
+  }
+
+  /* The wrapper is the grid item, so it has to pass the row's height down to
+     the card rather than letting the card keep its natural height. */
+  .year__cell {
+    grid-column: span var(--span, 6);
+    display: grid;
+  }
+
+  @media (max-width: 860px) {
+    .year__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .year__cell {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

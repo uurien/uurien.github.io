@@ -1,0 +1,45 @@
+---
+title: "Example Thing (template — not real)"
+date: 2026-01-01
+description: "A template Thing that demonstrates the content format. It is not a real project and is excluded from the homepage and /things archive."
+cover: "./example-template-thing/cover.svg"
+coverAlt: "Placeholder cover image for the template Thing"
+tags: ["template"]
+githubUrl: "https://github.com/uurien/uurien.github.io"
+featured: false
+draft: false
+example: true
+gallery:
+  - src: "./example-template-thing/gallery-1.svg"
+    alt: "Placeholder gallery image one"
+    caption: "Captions are optional and show up under a gallery photo."
+  - src: "./example-template-thing/gallery-2.svg"
+    alt: "Placeholder gallery image two, taller than the others"
+---
+
+This is the body of a Thing. It's plain Markdown (or MDX), so headings,
+paragraphs, links, code and images all work as usual.
+
+## A small Thing can be this short
+
+A single cover photo, a title, a date and two sentences is a complete Thing.
+Not every project needs sections, galleries or a long write-up.
+
+## A bigger Thing can have more
+
+Bigger Things can include several sections, more photos, and things like
+code blocks:
+
+```ts
+const thing = {
+  title: "Hand-wired keyboard",
+  madeWith: ["Raspberry Pi Pico", "diodes", "patience"],
+};
+```
+
+Or a gallery of extra photos declared in the frontmatter above — see the
+images at the bottom of this page.
+
+> This whole file only exists to show the shape of a Thing. Delete it, or
+> leave it here as a reference — it never shows up on the homepage or on
+> `/things` because `example: true` filters it out of both listings.
