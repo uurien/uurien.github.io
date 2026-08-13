@@ -8,8 +8,9 @@ import { getActivity } from '../lib/activity';
 
 const allThings = await getPublishedThings();
 // Featured Things first; if none are marked featured, just show the newest.
+// The homepage is only a selection — everything lives on /things.
 const featured = allThings.filter((t) => t.data.featured);
-const things = (featured.length > 0 ? featured : allThings).slice(0, 6);
+const things = (featured.length > 0 ? featured : allThings).slice(0, 4);
 
 const activity = await getActivity(6);
 ---

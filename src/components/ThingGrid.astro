@@ -1,28 +1,59 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import ThingCard from './ThingCard.astro';
+import { assignSpans } from '../lib/things';
 
 interface Props {
   things: CollectionEntry<'things'>[];
 }
 
 const { things } = Astro.props;
+
+// Rows alternate 60/40 then 40/60.
+const spans = assignSpans(things.length, [7, 5, 5, 7]);
+
+// Roughly how wide the card will be, so the browser picks a sensible source.
+const sizesFor = (span: number) =>
+  `(min-width: 1180px) ${Math.round((span / 12) * 1120)}px, (min-width: 860px) ${Math.round(
+    (span / 12) * 100
+  )}vw, 100vw`;
 ---
 
 <div class="thing-grid">
-  {things.map((thing) => <ThingCard thing={thing} />)}
+  {
+    things.map((thing, i) => (
+      <div class="thing-grid__cell" style={`--span:${spans[i]}`}>
+        <ThingCard
+          thing={thing}
+          imageSizes={sizesFor(spans[i]!)}
+          ratio={spans[i] === 12 ? 2.6 : undefined}
+        />
+      </div>
+    ))
+  }
 </div>
 
 <style>
   .thing-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(12, 1fr);
     gap: var(--gap);
+  }
+
+  /* The cell is the grid item, so it has to hand the row's height down to
+     the card rather than letting the card keep its natural height. */
+  .thing-grid__cell {
+    grid-column: span var(--span, 6);
+    display: grid;
   }
 
   @media (max-width: 860px) {
     .thing-grid {
       grid-template-columns: 1fr;
+    }
+
+    .thing-grid__cell {
+      grid-column: 1 / -1;
     }
   }
 </style>
