@@ -9,7 +9,7 @@ export const site = {
   location: 'Zarautz, Spain',
   social: {
     github: 'https://github.com/uurien',
-    bluesky: 'https://bsky.app/profile/uurien.bsky.social',
+    bluesky: 'https://bsky.app/profile/ugaitz.info',
     linkedin: 'https://www.linkedin.com/in/uurien',
   },
   about:
