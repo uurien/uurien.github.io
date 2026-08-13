@@ -27,7 +27,10 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          # Must match the Node/npm that generated package-lock.json: npm 10
+          # and npm 11 disagree about optional platform packages, which makes
+          # `npm ci` reject a lock the other version considers valid.
+          node-version: 24
           cache: npm
 
       - run: npm ci
