@@ -4,7 +4,7 @@ export const site = {
   name: 'Ugaitz Urien',
   tagline: [
     'Software engineer. Co-founder of Arima and Hdiv.',
-    'I make software and other things, mostly while my kids are napping.',
+    'Most of the things you\'ll find here were built during my kids\' weekend nap time.',
   ],
   location: 'Zarautz, Spain',
   social: {
