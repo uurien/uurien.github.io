@@ -1,0 +1,81 @@
+---
+title: "Meanwaile: The Why and the How"
+date: 2026-08-16
+description: "How a summer side project about AI agents turned into a small platform for playing while your coding agent is busy."
+cover: "./2026-08-16-meanwaile-how-and-why/cover.png"
+coverAlt: "The Meanwaile landing page, with the headline \"Your agent works. You, meanwhile, play.\" over a dark green background"
+tags: ["AI", "Coding agents"]
+textPosition: bottom-center
+featured: true
+---
+
+This summer is special because I am taking July and August off, and that gives me a lot of time to spend with my family. It has been great, some days out here, other days out there in the camper van.
+
+And as my kids are still small (the oldest one isn't 4 yet), they spend some time napping. Since I really like working on side projects, those naps give me some time to work on them.
+
+With more free time than I usually have, I wanted a side project to work on, related to coding agents, to play with them, learn about them and improve how I use them.
+
+I had some ideas before Meanwaile: some related to coding in the cloud using my phone to write the prompts, others related to notifications when an agent finishes a task, etc. All of them were already covered by existing products, and I didn't want to build yet another version of something that was already out there.
+
+When I was thinking about notification projects (and saw that all my ideas were already implemented), I realized that I could do something for fun, fun for me and for whatever users I might get. What if, instead of notifying you when an agent finished something, it just gave you something fun to do meanwhile? (Yeah, MeanwAIle, not super original, I know.)
+
+## Meanwaile
+
+Meanwaile gives you something fun to do while your coding agent is working, for those tasks that leave you just waiting, without enough time to do anything productive.
+
+Your coding agent starts working, and if you haven't touched anything for a few seconds, Meanwaile opens a popup so you can pick a game and play it. The game stops automatically when it detects that the agent has finished. I don't want to waste your time, just give you a little distraction while you wait.
+
+The games should be short, no longer than a minute. I had already built two games like this in the past: one similar to Circle Tap for Android (not available anymore), and Meanwaile Runner, a modification of a game we built for the Fast FOSS Game competition at a LAN party (the <a href="https://euskalencounter.org/" target="_blank" rel="noopener noreferrer">Euskal Encounter</a>). That is why I decided to reuse these games in the first version of Meanwaile.
+
+To make this work, I had to learn how an application can subscribe to different coding agents' events. Hooks can be added to the coding agent's settings files: in Claude Code you can point them directly at a URL that is called when an event happens, and in Codex you have to define a command to execute, which can be a curl call to that same endpoint.
+
+## What Meanwaile has become
+
+It started as a side project to play with AI and learn about it, and it has grown into an installable open source product.
+
+It is not just an application any more: it now has its own Game Room, which you can use to install extra games. The games can also be played on <a href="https://gameroom.meanwaile.com/" target="_blank" rel="noopener noreferrer">the web</a>.
+
+I created two extra games for the Game Room, and more are coming soon:
+
+- <a href="https://gameroom.meanwaile.com/play.html?id=meanwaile-maze" target="_blank" rel="noopener noreferrer">Meanwaile Maze</a>: a maze game, find the exit as fast as you can.
+- <a href="https://gameroom.meanwaile.com/play.html?id=meanwaile-typewall" target="_blank" rel="noopener noreferrer">Typewall</a>: type the falling words before they start destroying the wall and your lives.
+
+If you want to add your own game to the Meanwaile platform, you can just open a PR with it in the <a href="https://github.com/uurien/meanwaile-games" target="_blank" rel="noopener noreferrer">Game Room repository</a> — it will be welcome.
+
+## Making it installable
+
+Getting it to work on other computers gave me new problems, much less fun this time.
+
+- **macOS**: to stop Gatekeeper alerts, I ended up paying for an Apple Developer license and notarizing the release binaries in CI.
+- **Windows**: I tried to get a free certificate from SignPath Foundation, but they rejected my request. Turns out 3 GitHub stars are not enough: they need the project to be better known first.
+- **Linux**: it had its own problems, most of them related to Wayland and to Electron's ability to get the tray icon position and put the popup where I want it. On top of that, "Linux" is a very big word: I can test manually on one setup (Ubuntu with GNOME), but there is no way I can properly test every distro and desktop environment.
+
+## Yes, it is made with AI
+
+I want to be honest about this: all the code has been generated using Codex and Claude Code. I decided what I wanted, how it should work, what the next steps were, etc., but the code has been written by the agents.
+
+This is a side project, I am the only one working on it, and I do it in my free time, so the code is far from being 100% reviewed. The critical paths are reviewed, but most of the rest is not.
+
+This project doesn't try to be an example of how we should work with AI; IMHO, in a professional environment, 100% of the code should be reviewed by humans, the same way we review code written by other people.
+
+## What I learnt making this with AI
+
+The initial idea wasn't about learning something specific: I wanted to play and learn about making software with AI in general. With Meanwaile I learnt about hooks, lifecycles and integrations between agents and external apps.
+
+To make the Meanwaile app I mostly used Claude Code and it worked well. I used Sonnet almost all the time, with just a few tests with Opus, and I think it was good enough for this purpose.
+
+But when I started to implement the games, I missed the ability to generate sprites and images. I am not a graphic designer and I don't know how to create good ones. Codex has an image generator built in and Claude Code does not, so I used Codex to implement the games.
+
+For a side project like this one, where I only work around 2 hours a day, the ChatGPT Plus and Claude Code Pro plans are enough; I only hit the Claude Code limit once. But I think these plans are a bit small for 8 hours a day in a professional environment.
+
+I used two MCP servers:
+- **Playwright**: super useful to make the agent test the games by opening a browser; it does it automatically.
+- **Context7**: I think it helped find the right documentation for the libraries I was using. I say "I think" because I haven't compared the results with and without the server, but I could read in the Claude Code window that it was using Context7 to read the docs.
+
+## The nap is over
+
+And this was my experience working on this project. My idea is to keep evolving the product, maybe adding different notifications even when the game is not running, or adding some useful data for the users, not only games. Who knows.
+
+The funny thing is that while the agent was reviewing this post and fixing my broken English, I was playing Typewall, lol.
+
+And as my kids are waking up from their nap, I have to finish the post here.
