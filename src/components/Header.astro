@@ -10,7 +10,7 @@ interface Props {
 const { compact = false } = Astro.props;
 ---
 
-<header class="site-header">
+<header class:list={["site-header", { "site-header--compact": compact }]}>
   <div class="wrap site-header__inner">
     <div class="site-header__intro">
       <h1 class="site-header__name">
@@ -18,27 +18,39 @@ const { compact = false } = Astro.props;
       </h1>
       {
         !compact && (
-          <div class="site-header__bio">
-            {site.tagline.map((line) => (
-              <p>{line}</p>
-            ))}
-            <p class="site-header__location">
-              <svg
-                aria-hidden="true"
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              {site.location}
-            </p>
+          <div class="site-header__profile">
+            <img
+              class="site-header__avatar"
+              src="/profile.jpeg"
+              alt=""
+              width="280"
+              height="280"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+            <div class="site-header__bio">
+              {site.tagline.map((line) => (
+                <p>{line}</p>
+              ))}
+              <p class="site-header__location">
+                <svg
+                  aria-hidden="true"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                {site.location}
+              </p>
+            </div>
           </div>
         )
       }
@@ -94,6 +106,24 @@ const { compact = false } = Astro.props;
     gap: 1.5rem;
   }
 
+  .site-header__profile {
+    display: grid;
+    grid-template-columns: 7.5rem minmax(0, 46ch);
+    align-items: flex-start;
+    gap: 1rem;
+    margin-top: 0.85rem;
+    min-width: 0;
+  }
+
+  .site-header__avatar {
+    width: 7.5rem;
+    height: 7.5rem;
+    flex: 0 0 auto;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+  }
+
   .site-header__name {
     font-size: 1.5rem;
     letter-spacing: 0.02em;
@@ -105,7 +135,6 @@ const { compact = false } = Astro.props;
   }
 
   .site-header__bio {
-    margin-top: 0.85rem;
     max-width: 46ch;
     color: var(--text);
   }
@@ -147,6 +176,15 @@ const { compact = false } = Astro.props;
   }
 
   @media (max-width: 640px) {
+    .site-header__profile {
+      grid-template-columns: 5rem minmax(0, 1fr);
+    }
+
+    .site-header__avatar {
+      width: 5rem;
+      height: 5rem;
+    }
+
     .site-header__social span {
       display: none;
     }
