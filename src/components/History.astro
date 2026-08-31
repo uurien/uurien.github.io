@@ -9,13 +9,18 @@ import { history } from '../config/history';
         <span
           class="history__stop"
           tabindex="0"
-          aria-label={`${stop.name}. ${stop.description}`}
+          aria-label={`${stop.name}. ${stop.description}${stop.caption ? ` ${stop.caption}.` : ''}`}
         >
           <img class="history__icon" src={stop.icon} alt="" aria-hidden="true" />
           <span class="history__tooltip" aria-hidden="true">
             <span class="history__tooltip-name">{stop.name}</span>
             <span class="history__tooltip-text">{stop.description}</span>
           </span>
+          {stop.caption && (
+            <span class="history__caption" aria-hidden="true">
+              {stop.caption}
+            </span>
+          )}
         </span>
       </li>
     ))
@@ -67,6 +72,32 @@ import { history } from '../config/history';
     width: clamp(1.35rem, 4.3vw, 1.7rem);
     height: clamp(1.35rem, 4.3vw, 1.7rem);
     object-fit: contain;
+  }
+
+  .history__caption {
+    position: absolute;
+    top: calc(100% + 0.45rem);
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 6rem;
+    font-size: 0.6rem;
+    line-height: 1.2;
+    text-align: center;
+    color: var(--accent-green);
+  }
+
+  .history__caption::after {
+    content: '';
+    position: absolute;
+    top: calc(100% + 0.18rem);
+    left: -0.08em;
+    width: calc(100% + 0.16em);
+    height: 0.3rem;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 8' preserveAspectRatio='none'%3E%3Cpath d='M1 5 C20 2 38 5.8 56 3.6 C73 1.8 87 4.2 99 2.5' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 8' preserveAspectRatio='none'%3E%3Cpath d='M1 5 C20 2 38 5.8 56 3.6 C73 1.8 87 4.2 99 2.5' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+    pointer-events: none;
   }
 
   .history__tooltip {
