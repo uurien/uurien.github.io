@@ -5,6 +5,8 @@ export type HistoryStop = {
   name: string;
   description: string;
   icon: string;
+  // Optional short note rendered under the circle.
+  caption?: string;
 };
 
 export const history: HistoryStop[] = [
@@ -32,5 +34,11 @@ export const history: HistoryStop[] = [
     name: 'Datadog',
     description: 'Hdiv became part of Datadog.',
     icon: '/history/datadog.png',
+  },
+  {
+    name: 'Arima',
+    description: 'Back to Arima.',
+    icon: '/history/arima.png',
+    caption: "I'm back",
   },
 ];
